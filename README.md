@@ -11,19 +11,29 @@ For using the python script, these are the steps:
 - virtualenv venv to create your new environment (called 'venv' here)
 - source venv/bin/activate to enter the virtual environment
 - pip install -r requirements.txt to install the requirements in the current environment
-- python cscs-keygen.py
+- <s>python cscs-keygen.py</s>
 
-For using the shell script, these are the steps:
+<s>For using the shell script, these are the steps:
+
 - git clone <repo>
 - cd <repo>
-- bash cscs-keygen.sh
+- bash cscs-keygen.sh</s>
 
-To setup the username and password, modify cscs-keygen.py, and replace the Python in the first line with the exact version you want to run (normally in a virtualenv)
-Run this python and set the username, password and TOTP
+To setup the username and password, make the following change:
 
-import keyring
-keyring.set_password('cscs-keygen','username','YOUR-CSCS-USERNAME')
-keyring.set_password('cscs-keygen','password','YOUR-CSCS-PASSWORD)
-keyring.set_password('cscs-keygen','TOTP','YOUR-CSCS-MFA-TOKEN')
+- modify **cscs-keygen.py**, and replace the python in the first line with the exact version you want to run (normally in a virtualenv)
 
-On OS/X, edit path inside cscs-key.plist and copy to ~/Library/LaunchAgents to run every night.
+Run this python and set the username, password, and TOTP.
+
+    import keyring
+    keyring.set_password('cscs-keygen','username','YOUR-CSCS-USERNAME')
+    keyring.set_password('cscs-keygen','password','YOUR-CSCS-PASSWORD)
+    keyring.set_password('cscs-keygen','TOTP','YOUR-CSCS-MFA-TOKEN')
+
+On OS/X you can set this up to run nightly:
+
+- edit the **path** and **username** to **cscs-keygenn.py** inside **cscs-key.plist**.
+- optionally change **StartCalendarInterval**. This only runs if you are logged on or after waking from sleep.
+- copy **cscs-key.plist** to **~/Library/LaunchAgents/** to run every night.
+
+For other any other OS refer to the scheduler documentation (e.g. **cron**). For information on using keyring on other systems visit <https://pypi.org/project/keyring/>.
