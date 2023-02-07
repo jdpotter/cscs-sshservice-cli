@@ -1,3 +1,7 @@
+#!/Users/dpotter/.pyenv/versions/cscs-2fa/bin/python3
+import pyotp
+import keyring
+import subprocess
 import getpass
 import requests
 import os
@@ -12,9 +16,9 @@ api_get_keys = 'https://sshservice.cscs.ch/api/v1/auth/ssh-keys/signed-key'
 
 #Methods:
 def get_user_credentials():
-    user = input("Username: ")
-    pwd = getpass.getpass()
-    otp = getpass.getpass("Enter OTP (6-digit code):")
+    user = keyring.get_password('cscs-keygen','username') # input("Username: ")
+    pwd = keyring.get_password('cscs-keygen','password') # getpass.getpass()
+    otp = pyotp.TOTP(keyring.get_password('cscs-keygen','TOTP')).now() # getpass.getpass("Enter OTP (6-digit code):")
     if not (re.match('^\d{6}$', otp)):
        sys.exit("Error: OTP must be a 6-digit code.")
     return user, pwd, otp
@@ -99,7 +103,8 @@ ssh -i ~/.ssh/cscs-key <CSCS-LOGIN-NODE>
 
     """
 
-    print(message)
+    #print(message)
+    subprocess.run(["ssh-add", "-t", "1d", os.path.expanduser("~")+'/.ssh/cscs-key'])
 
 if __name__ == "__main__":
     main()

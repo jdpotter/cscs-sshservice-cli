@@ -17,3 +17,13 @@ For using the shell script, these are the steps:
 - git clone <repo>
 - cd <repo>
 - bash cscs-keygen.sh
+
+To setup the username and password, modify cscs-keygen.py, and replace the Python in the first line with the exact version you want to run (normally in a virtualenv)
+Run this python and set the username, password and TOTP
+
+import keyring
+keyring.set_password('cscs-keygen','username','YOUR-CSCS-USERNAME')
+keyring.set_password('cscs-keygen','password','YOUR-CSCS-PASSWORD)
+keyring.set_password('cscs-keygen','TOTP','YOUR-CSCS-MFA-TOKEN')
+
+On OS/X, edit path inside cscs-key.plist and copy to ~/Library/LaunchAgents to run every night.
